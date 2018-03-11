@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script type="text/javascript">
+ 
+    $(document).ready(function () {
+ 
+        setInterval(function () {
+            var someval = Math.floor(Math.random() * 100);
+            //$('#sample').text('Fetching for Service Code :' + someval);
+            window.location.replace("/Home/Index");
+        }, 5000);
+    });
+
+</script>
+
+<div class="container">
+    <div class="col-md-3 col-md-offset-4">
+        <br />
+        @*<div id="sample">Fetching for Service Code :</div>*@
+
+        <h3>Driver Module</h3>
+        <div class="form-group">
+            <label for="Incident">    No incident detected so for now!!!</label>
+        </div>
+        <div class="form-group">
+            <a href="/Home/Map" class="btn btn-primary">Refresh</a>
+        </div>
+    </div>
+
+</div>
+

@@ -1,0 +1,130 @@
+﻿
+@{
+    ViewBag.Title = "Drivers";
+}
+
+<h2>Drivers</h2>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Untitled Document</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcyKAB82SCcZLFaTANTYiF39acebEnTVM&sensor=false&libraries=places"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            font-size: 18px;
+        }
+
+        #map_canvas {
+            height: 600px;
+            width: 100%;
+            margin-top: 0.6em;
+        }
+    </style>
+    <script>
+function initialize() {
+var mapOptions = {
+center: new google.maps.LatLng(42.545998,1.601257),
+zoom: 11,
+mapTypeId: google.maps.MapTypeId.ROADMAP
+};
+var map = new google.maps.Map(document.getElementById('map_canvas'),
+mapOptions);
+
+var input = document.getElementById('searchTextField');
+var autocomplete = new google.maps.places.Autocomplete(input);
+
+autocomplete.bindTo('bounds', map);
+
+var infowindow = new google.maps.InfoWindow();
+var marker = new google.maps.Marker({
+map: map,
+draggable: true
+
+});
+
+google.maps.event.addListener(autocomplete, 'place_changed', function() {
+infowindow.close();
+var place = autocomplete.getPlace();
+if (place.geometry.viewport) {
+map.fitBounds(place.geometry.viewport);
+} else {
+map.setCenter(place.geometry.location);
+map.setZoom(17); // Why 17? Because it looks good.
+}
+
+var image = new google.maps.MarkerImage(
+place.icon,
+new google.maps.Size(71, 71),
+new google.maps.Point(0, 0),
+new google.maps.Point(17, 34),
+new google.maps.Size(35, 35));
+marker.setIcon(image);
+marker.setPosition(place.geometry.location);
+
+var address = '';
+if (place.address_components) {
+address = [
+(place.address_components[0] && place.address_components[0].short_name || ''),
+(place.address_components[1] && place.address_components[1].short_name || ''),
+(place.address_components[2] && place.address_components[2].short_name || '')
+].join(' ');
+}
+
+infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
+infowindow.open(map, marker);
+
+});
+
+// Sets a listener on a radio button to change the filter type on Places
+// Autocomplete.
+function setupClickListener(id, types) {
+var radioButton = document.getElementById(id);
+google.maps.event.addDomListener(radioButton, 'click', function() {
+autocomplete.setTypes(types);
+});
+}
+
+setupClickListener('changetype-all', []);
+setupClickListener('changetype-establishment', ['establishment']);
+setupClickListener('changetype-geocode', ['geocode']);
+
+// Mostrat lat i long en txtbox
+google.maps.event.addListener(marker, 'dragend', function (event) {
+document.getElementById("latbox").value = this.getPosition().lat();
+document.getElementById("lngbox").value = this.getPosition().lng();
+});
+
+google.maps.event.addListener(marker, 'click', function (event) {
+document.getElementById("latbox").value = event.latLng.lat();
+document.getElementById("lngbox").value = event.latLng.lng();
+});
+
+}
+google.maps.event.addDomListener(window, 'load', initialize);
+var marker = new google.maps.Marker({
+    position: { lat: 15, lng: 12 },
+    map: map
+});
+    </script>
+</head>
+
+<body>
+     
+  
+   
+      
+            <div>
+                <input style="display:none" id="searchTextField"  value="Trivandrum" type="text" size="50" name="address" required>
+
+
+            </div>
+            <div id="map_canvas"></div><div id="latlong">
+                <p> <input size="20" type="hidden" id="latbox" name="lat" value="42.545998"></p>
+                <p> <input size="20" type="hidden" id="lngbox" name="lng" value="1.601257"></p>
+            </div>
+       
+</body>
+</html>
+

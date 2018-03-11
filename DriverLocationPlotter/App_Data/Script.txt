@@ -1,0 +1,12 @@
+﻿Create Table Accident
+(
+Accident int Identity(1,1) Primary Key,
+Location varchar(100),
+DriverName varchar(100),
+DriverId varchar(100),
+VehicleId varchar(100),
+VehicleNO varchar(100)
+)
+
+INSERT Into Accident (Location,DriverName,DriverId,VehicleId,VehicleNO)
+Values ('Kollam','Varun',1,1,'KL-0167')
